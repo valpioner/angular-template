@@ -1,0 +1,5 @@
+Getting data from Stateless Observable Service:
+
+<div *ngFor="let course of (beginnerCourses$ | async)">BEGINNER: {{course.name}}</div>
+<div *ngFor="let course of (advancedCourses$ | async)">ADVANCED: {{course.name}}</div>
+<br>

@@ -1,0 +1,21 @@
+<!-- Basics -->
+<input [(ngModel)]="age" #input="ngModel" required>
+<div [ngStyle]="{width: true ? '200px' : '50px'}" appColor="blue" [mouseOverColor]="'green'">
+  Valid:
+  {{ input.valid }}
+</div>
+<button (click)="setValue()">Set value</button>
+<hr>
+
+<!-- Structural Directives -->
+<div *appUnless="false">Custom Structural Directive works</div>
+<ng-container *ngIf="items.length; else elseBlock">
+  <div *ngFor="let item of items; let i = index" [ngClass]="{odd: 5%2 !== 0}">
+    {{i}} - {{item.name}}
+  </div>
+</ng-container>
+<ng-template #elseBlock>No items found</ng-template>
+
+<!-- projection content goes here -->
+<ng-content></ng-content>
+<hr>

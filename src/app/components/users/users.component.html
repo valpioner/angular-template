@@ -1,0 +1,11 @@
+Navigate to users/user/10/Vika?param=2#fromHTML <br>
+<a [routerLink]="['/users', 10, 'Vika']" [queryParams]="{param: 2}" fragment='fromHtml'>
+  Load Vika (from html)
+</a>
+
+<p></p>
+
+Navigate to users/user/5/Dima?param=2#fromJS <br>
+<button (click)="loadUsers()">Load Dima (from js)</button>
+
+<hr>
