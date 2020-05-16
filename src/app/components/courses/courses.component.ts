@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CoursesService } from 'src/app/services/courses.service';
 import { Observable } from 'rxjs';
 import { Course, sortCoursesById } from 'src/app/models/course';
-import { map } from 'rxjs/operators';
+import { map, finalize } from 'rxjs/operators';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
   selector: 'app-courses',
@@ -10,10 +11,13 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit {
-  private beginnerCourses$: Observable<Course[]>;
-  private advancedCourses$: Observable<Course[]>;
+  beginnerCourses$: Observable<Course[]>;
+  advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(
+    private coursesService: CoursesService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.reloadCourses();
@@ -24,13 +28,15 @@ export class CoursesComponent implements OnInit {
       .loadAllCoursesFromHardcode() // loadAllCourses();
       .pipe(map((courses) => courses.sort(sortCoursesById)));
 
-    this.beginnerCourses$ = courses$.pipe(
+    const loadCourses$ = this.loadingService.showLoaderUntilCopmleted(courses$);
+
+    this.beginnerCourses$ = loadCourses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category === 'BEGINNER')
       )
     );
 
-    this.advancedCourses$ = courses$.pipe(
+    this.advancedCourses$ = loadCourses$.pipe(
       map((courses) =>
         courses.filter((course) => course.category === 'ADVANCED')
       )
